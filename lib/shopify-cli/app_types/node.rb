@@ -12,20 +12,31 @@ module ShopifyCli
             HOST=#{host}
           KEYS
         end
+
+        def description
+          'node embedded app'
+        end
+
+        def callback_url(host)
+          "#{host}/auth/callback"
+        end
+
+        def serve_command
+          'npm run dev'
+        end
+
+        def generate
+          {
+            page: 'npm run-script generate-page',
+          }
+        end
       end
 
-      def self.description
-        'node embedded app'
-      end
-
-      def self.serve_command
-        'npm run dev'
-      end
-
-      def self.generate
-        {
-          page: 'npm run-script generate-page',
-        }
+      def call(*args)
+        @name = args.shift
+        @ctx = args.shift
+        @dir = File.join(Dir.pwd, @name)
+        embedded_app
       end
 
       protected

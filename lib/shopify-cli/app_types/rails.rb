@@ -4,12 +4,28 @@ require 'shopify_cli'
 module ShopifyCli
   module AppTypes
     class Rails < AppType
-      def self.description
-        'rails embedded app'
+      class << self
+        def description
+          'rails embedded app'
+        end
+
+        def serve_command
+          'bin/rails server'
+        end
+
+        def callback_url(host)
+          "#{host}/auth/shopify/callback"
+        end
       end
 
-      def self.serve_command
-        'bin/rails server'
+      def call(*args)
+        @name = args.shift
+        @dir = File.join(Dir.pwd, @name)
+        generate
+      end
+
+      def rails_installed?
+        ShopifyCli::Helpers::GemHelper.installed?(ctx, 'rails')
       end
 
       protected
