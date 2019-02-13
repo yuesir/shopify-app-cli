@@ -35,6 +35,10 @@ module ShopifyCli
       Kernel.exec(*args)
     end
 
+    def log(*args)
+      puts CLI::UI.fmt("{{red:!}} #{args.join}") if @env['DEBUG']
+    end
+
     def method_missing(method, *args)
       if CLI::Kit::System.respond_to?(method)
         CLI::Kit::System.send(method, *args)
