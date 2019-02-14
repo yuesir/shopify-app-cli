@@ -58,7 +58,15 @@ module ShopifyCli
 
         @keys = Helpers::EnvFileHelper.new(self, @ctx)
         @keys.write('.env')
+        remove_git_dir
         puts CLI::UI.fmt(post_clone)
+      end
+
+      def remove_git_dir
+        git_dir = File.join(Dir.pwd, @name, '.git')
+        if File.exist?(git_dir)
+          FileUtils.rm_r(git_dir)
+        end
       end
 
       def post_clone
