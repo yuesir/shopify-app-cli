@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 require 'shopify_cli'
 
 module ShopifyCli
@@ -17,8 +18,8 @@ module ShopifyCli
 
       def self.help
         <<~HELP
-          Bootstrap an app.
-          Usage: {{command:#{ShopifyCli::TOOL_NAME} create <appname>}}
+          Generate functionality for your app
+          Usage: {{command:#{ShopifyCli::TOOL_NAME} generate page <name>}}
         HELP
       end
     end
