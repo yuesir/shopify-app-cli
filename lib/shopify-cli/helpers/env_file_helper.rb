@@ -5,8 +5,8 @@ module ShopifyCli
     class EnvFileHelper
       def initialize(app_type, ctx)
         @ctx = ctx
-        key = ctx.app_metadata[:apiKey]
-        secret = ctx.app_metadata[:sharedSecret]
+        key = ctx.app_metadata['apiKey']
+        secret = ctx.app_metadata['sharedSecret']
         host = ctx.app_metadata[:host]
         @env_content = app_type.class.env_file(key, secret, host)
       end

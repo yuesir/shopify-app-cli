@@ -7,7 +7,7 @@ module ShopifyCli
         repository = args.shift
         dest = args.shift
         CLI::UI::Frame.open("Cloning into #{dest}...") do
-          git_progress('clone', '--single-branch', repository, dest)
+          git_progress('clone', repository, dest)
         end
       end
 

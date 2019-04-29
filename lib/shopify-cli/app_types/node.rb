@@ -10,6 +10,7 @@ module ShopifyCli
             SHOPIFY_API_SECRET_KEY=#{secret}
             SHOPIFY_DOMAIN=myshopify.io
             HOST=#{host}
+            PORT=8081
           KEYS
         end
 
@@ -36,26 +37,18 @@ module ShopifyCli
         @name = args.shift
         @ctx = args.shift
         @dir = File.join(Dir.pwd, @name)
-        embedded_app
+        build
       end
 
       protected
 
       def build
         ShopifyCli::Tasks::Clone.call('git@github.com:shopify/webgen-embeddedapp.git', @name)
+        CLI::Kit::System.system("git --git-dir ./#{@name}/.git reset --hard origin/configurable-domain")
         ShopifyCli::Finalize.request_cd(@name)
         ShopifyCli::Tasks::JsDeps.call(@dir)
 
-        api_key = CLI::UI.ask('What is your Shopify API Key')
-        api_secret = CLI::UI.ask('What is your Shopify API Secret')
-
         # temporary metadata construction, will be replaced by data from Partners
-        @ctx.app_metadata = {
-          apiKey: api_key,
-          sharedSecret: api_secret,
-          host: 'host', # to be added with ngrok task
-        }
-
         @keys = Helpers::EnvFileHelper.new(self, @ctx)
         @keys.write('.env')
         remove_git_dir
@@ -70,7 +63,7 @@ module ShopifyCli
       end
 
       def post_clone
-        "Run {{command:npm run dev}} to start the app server"
+        "Run {{command:#{ShopifyCli::TOOL_NAME} serve}} to start the app server"
       end
     end
   end

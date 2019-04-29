@@ -12,7 +12,7 @@ module ShopifyCli
       DOWNLOAD_URLS = {
         mac: 'https://bin.equinox.io/c/4VmDzA7iaHb/ngrok-stable-darwin-amd64.zip',
       }
-      TIMEOUT = 5
+      TIMEOUT = 10
 
       def call(ctx)
         @ctx = ctx
@@ -34,20 +34,22 @@ module ShopifyCli
         install
 
         url = if running?
-          state[:url]
+          fetch_url
         else
           run
         end
         @ctx.puts("{{green:✔︎}} ngrok tunnel running at #{url}")
+        @ctx.app_metadata = {host: url}
         url
       end
 
       def run
-        pid = @ctx.spawn(ngrok_command, chdir: ShopifyCli::ROOT)
-        Process.detach(pid)
-        url = fetch_url
-        write_state(pid, url, Time.now)
-        url
+        pid = fork do
+          Process.setsid
+          pid = Kernel.spawn(ngrok_command, chdir: ShopifyCli::ROOT)
+          write_state(pid, Time.now)
+        end
+        fetch_url
       end
 
       private
@@ -57,11 +59,11 @@ module ShopifyCli
           state = read_state
           begin
             Process.kill(0, state[:pid])
-            true
+            return true
           rescue Errno::ESRCH
-            false
+            return false
           rescue Errno::EPERM
-            false
+            return false
           end
         else
           false
@@ -72,16 +74,14 @@ module ShopifyCli
         content = JSON.parse(File.open(pid_file).read)
         {
           pid: content['pid'],
-          url: content['url'],
           time: content['time'],
         }
       end
 
-      def write_state(pid, url, time)
+      def write_state(pid, time)
         File.open(pid_file, 'w') do |f|
           f.write({
             pid: pid,
-            url: url,
             time: time,
           }.to_json)
         end
@@ -129,7 +129,7 @@ module ShopifyCli
         @log ||= begin
           fname = File.join(ShopifyCli::ROOT, '.tmp', 'ngrok.log')
           FileUtils.touch(fname)
-          File.join(fname)
+          fname
         end
       end
 

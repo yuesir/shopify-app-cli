@@ -3,16 +3,16 @@ require 'shopify_cli'
 module ShopifyCli
   module Commands
     class Create < ShopifyCli::Command
-      prerequisite_task :tunnel
-
       def call(args, _name)
+        ShopifyCli::Tasks::Tunnel.call(@ctx)
+
         @name = args.shift
         @partners = Helpers::API::Partners.new(@ctx)
 
         return puts CLI::UI.fmt(self.class.help) unless @name
 
         apps = @partners.get_apps
-        @app = if apps.size > 1
+        @app = @ctx.app_metadata = if apps.size > 1
           CLI::UI::Prompt.ask('Which app would you like to use?') do |handler|
             apps.each do |app|
               handler.option(app['title']) { app }
@@ -29,19 +29,17 @@ module ShopifyCli
         end
 
         puts CLI::UI.fmt("{{yellow:*}} updating app url")
-        @ctx.log @app
-        @partners.update_app_url(@app['apiKey'], @ngrok, app_type.callback_url(@ngrok))
+        @ctx.log(@ctx.app_metadata)
+        @partners.update_app_url(@app['apiKey'], @ctx.app_metadata[:host], app_type.callback_url(@ctx.app_metadata[:host]))
 
         puts CLI::UI.fmt("{{yellow:*}} updated")
-
-        return puts "not yet implemented" unless app_type
 
         # we need the concept of "project" probably to hold path state
         @ctx.root = File.join(Dir.pwd, @name)
 
-        AppTypeRegistry.build(app_type, @name, @ctx)
+        AppTypeRegistry.build(app_type_id, @name, @ctx)
 
-        ShopifyCli::Project.write(@ctx, app_type)
+        ShopifyCli::Project.write(@ctx, app_type_id)
       end
 
       def self.help

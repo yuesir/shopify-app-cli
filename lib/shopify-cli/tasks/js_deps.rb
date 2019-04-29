@@ -11,9 +11,12 @@ module ShopifyCli
       def call(*args)
         @dir = args.shift || Dir.pwd
 
-        CLI::UI::Frame.open("Installing dependencies with #{installer}...") do
+        spin = CLI::UI::SpinGroup.new
+        spin.add("Installing dependencies with #{installer}") do |spinner|
           install_progress
+          spinner.update_title("Installed dependencies with #{installer}")
         end
+        spin.wait
       end
 
       def installer
@@ -28,10 +31,11 @@ module ShopifyCli
 
       def install_progress
         success = CLI::Kit::System.system(*INSTALL_COMMANDS[installer], chdir: @dir) do |out, err|
-          puts out if /^\[[\d\/]+\//.match(out)
-          err.lines.each do |e|
-            puts e
-          end
+          puts out #if /^\[[\d\/]+\//.match(out)
+          puts err
+          # err.lines.each do |e|
+          #   puts e
+          # end
         end.success?
         return false unless success
         true
