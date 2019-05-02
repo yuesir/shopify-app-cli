@@ -13,6 +13,7 @@ module ShopifyCli
       Registry.add(->() { const_get(const) }, cmd)
     end
 
+    register :Auth, 'auth', 'shopify-cli/commands/auth'
     register :Create, 'create', 'shopify-cli/commands/create'
     register :Generate, 'generate', 'shopify-cli/commands/generate'
     register :Help, 'help', 'shopify-cli/commands/help'
