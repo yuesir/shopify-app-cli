@@ -40,8 +40,10 @@ module ShopifyCli
         ShopifyCli::Finalize.request_cd(name)
         ShopifyCli::Tasks::JsDeps.call(ctx.root)
 
-        api_key = CLI::UI.ask('What is your Shopify API Key')
-        api_secret = CLI::UI.ask('What is your Shopify API Secret')
+        # api_key = CLI::UI.ask('What is your Shopify API Key')
+        # api_secret = CLI::UI.ask('What is your Shopify API Secret')
+        api_key = '1f64cf4a4eb0056f7175b6498c2270bd'
+        api_secret = '9ebe606bea1088662689545db67ffe76'
 
         env_file = Helpers::EnvFile.new(
           app_type: self,
