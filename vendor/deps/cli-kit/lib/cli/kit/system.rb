@@ -62,7 +62,7 @@ module CLI
         # - `status`: boolean success status of the command execution
         #
         # #### Usage
-        # `out_and_err, stat = CLI::Kit::System.capture2e('ls', 'a_folder')`
+        # `out_and_err, stat = CLI::Kit::('ls', 'a_folder')`
         #
         def capture2e(*a, sudo: false, env: ENV, **kwargs)
           delegate_open3(*a, sudo: sudo, env: env, method: :capture2e, **kwargs)

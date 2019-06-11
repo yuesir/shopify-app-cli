@@ -13,14 +13,16 @@ module ShopifyCli
 
       def git_progress(*git_command)
         CLI::UI::Progress.progress do |bar|
-          success = CLI::Kit::System.system('git', *git_command, '--progress') do |_out, err|
-            next unless err.strip.start_with?('Receiving objects:')
-            percent = (err.match(/Receiving objects:\s+(\d+)/)[1].to_f / 100).round(2)
-            bar.tick(set_percent: percent)
-          end.success?
-          return false unless success
-          bar.tick(set_percent: 1.0)
-          true
+          output, status = CLI::Kit::System.capture2e('git', *git_command, '--progress') do |_out, err|
+            unless status.success?
+             puts out
+            end
+              next unless output.strip.start_with?('Receiving objects:')
+              percent = (output.match(/Receiving objects:\s+(\d+)/)[1].to_f / 100).round(2)
+              bar.tick(set_percent: percent)
+            bar.tick(set_percent: 1.0)
+            true
+          end
         end
       end
     end
