@@ -1,0 +1,10 @@
+{"data": {
+  "customerCreate": {
+    "customer": {
+      "id": "gid://shopify/Customer/12345678",
+      "firstName": "first",
+      "lastName": "last"
+    },
+    "userErrors": []
+  }
+}}

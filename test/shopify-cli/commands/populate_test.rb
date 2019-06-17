@@ -28,6 +28,18 @@ module ShopifyCli
         Populate::Resource.any_instance.expects(:populate).with(10)
         @command.call(['products', '--count=10'], nil)
       end
+
+      def test_with_customers_arg_calls_customer_resource
+        Populate::Customer.expects(:new).with(ctx: @context, args: ['--count=10'])
+          .returns(mock(:populate))
+        @command.call(['customers', '--count=10'], nil)
+      end
+
+      def test_with_draftorders_arg_calls_customer_resource
+        Populate::DraftOrder.expects(:new).with(ctx: @context, args: ['--count=10'])
+          .returns(mock(:populate))
+        @command.call(['customers', '--count=10'], nil)
+      end
     end
   end
 end
