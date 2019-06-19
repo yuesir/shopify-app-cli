@@ -33,7 +33,9 @@ module ShopifyCli
               chdir: ShopifyCli::ROOT)
             .never
 
-          @command.call(@context)
+          capture_io do
+            @command.call(@context)
+          end
         end
 
         def test_call_downloads_heroku_cli_if_it_is_not_installed
@@ -45,20 +47,24 @@ module ShopifyCli
               chdir: ShopifyCli::ROOT)
             .returns(@status_mock[:true])
 
-          @command.call(@context)
+          capture_io do
+            @command.call(@context)
+          end
         end
 
         def test_call_raises_if_heroku_cli_download_fails
           stub_heroku_installed(status: false)
 
-          assert_raises ShopifyCli::Abort do
-            @context.expects(:system)
-              .with('curl', '-o', @download_path,
-                Deploy::Heroku::DOWNLOAD_URLS[@command.os],
-                chdir: ShopifyCli::ROOT)
-              .returns(@status_mock[:false])
+          @context.expects(:system)
+            .with('curl', '-o', @download_path,
+              Deploy::Heroku::DOWNLOAD_URLS[@command.os],
+              chdir: ShopifyCli::ROOT)
+            .returns(@status_mock[:false])
 
-            @command.call(@context)
+          assert_raises ShopifyCli::Abort do
+            capture_io do
+              @command.call(@context)
+            end
           end
         end
 
@@ -66,14 +72,16 @@ module ShopifyCli
           stub_heroku_installed(status: false)
           stub_heroku_download_exists(status: false)
 
-          assert_raises ShopifyCli::Abort do
-            @context.expects(:system)
-              .with('curl', '-o', @download_path,
-                Deploy::Heroku::DOWNLOAD_URLS[@command.os],
-                chdir: ShopifyCli::ROOT)
-              .returns(@status_mock[:true])
+          @context.expects(:system)
+            .with('curl', '-o', @download_path,
+              Deploy::Heroku::DOWNLOAD_URLS[@command.os],
+              chdir: ShopifyCli::ROOT)
+            .returns(@status_mock[:true])
 
-            @command.call(@context)
+          assert_raises ShopifyCli::Abort do
+            capture_io do
+              @command.call(@context)
+            end
           end
         end
 
@@ -82,7 +90,9 @@ module ShopifyCli
             .with('tar', '-xf', @download_path, chdir: ShopifyCli::ROOT)
             .never
 
-          @command.call(@context)
+          capture_io do
+            @command.call(@context)
+          end
         end
 
         def test_call_installs_heroku_cli_if_it_is_downloaded
@@ -92,34 +102,42 @@ module ShopifyCli
             .with('tar', '-xf', @download_path, chdir: ShopifyCli::ROOT)
             .returns(@status_mock[:true])
 
-          @command.call(@context)
+          capture_io do
+            @command.call(@context)
+          end
         end
 
         def test_call_raises_if_heroku_cli_install_fails
           stub_heroku_installed(status: false)
 
-          assert_raises ShopifyCli::Abort do
-            @context.expects(:system)
-              .with('tar', '-xf', @download_path, chdir: ShopifyCli::ROOT)
-              .returns(@status_mock[:false])
+          @context.expects(:system)
+            .with('tar', '-xf', @download_path, chdir: ShopifyCli::ROOT)
+            .returns(@status_mock[:false])
 
-            @command.call(@context)
+          assert_raises ShopifyCli::AbortSilent do
+            capture_io do
+              @command.call(@context)
+            end
           end
         end
 
         def test_call_raises_if_git_isnt_inited
           stub_git_init(status: false, commits: false)
 
-          assert_raises ShopifyCli::Abort do
-            @command.call(@context)
+          assert_raises ShopifyCli::AbortSilent do
+            capture_io do
+              @command.call(@context)
+            end
           end
         end
 
         def test_call_raises_if_git_is_inited_but_there_are_no_commits
           stub_git_init(status: true, commits: false)
 
-          assert_raises ShopifyCli::Abort do
-            @command.call(@context)
+          assert_raises ShopifyCli::AbortSilent do
+            capture_io do
+              @command.call(@context)
+            end
           end
         end
 
@@ -142,7 +160,9 @@ module ShopifyCli
             .with(@heroku_command, 'login')
             .returns(@status_mock[:true])
 
-          @command.call(@context)
+          capture_io do
+            @command.call(@context)
+          end
         end
 
         def test_call_raises_if_heroku_auth_fails
@@ -181,7 +201,9 @@ module ShopifyCli
             .with(@heroku_command, 'git:remote', '-a', 'app-name')
             .returns(@status_mock[:true])
 
-          @command.call(@context)
+          capture_io do
+            @command.call(@context)
+          end
         end
 
         def test_call_raises_if_choosing_existing_heroku_app_fails
@@ -242,8 +264,10 @@ module ShopifyCli
             .with('git', 'remote', 'add', 'heroku', @heroku_remote)
             .never
 
-          assert_raises ShopifyCli::Abort do
-            @command.call(@context)
+          assert_raises ShopifyCli::AbortSilent do
+            capture_io do
+              @command.call(@context)
+            end
           end
         end
 
@@ -291,7 +315,9 @@ module ShopifyCli
             .with('git', 'remote', 'add', 'origin', @heroku_remote)
             .returns(@status_mock[:true])
 
-          @command.call(@context)
+          capture_io do
+            @command.call(@context)
+          end
         end
 
         def test_call_raises_if_setting_remote_origin_fails
@@ -329,7 +355,9 @@ module ShopifyCli
             .with('git', 'push', '-u', 'heroku', "other_branch:master")
             .returns(@status_mock[:true])
 
-          @command.call(@context)
+          capture_io do
+            @command.call(@context)
+          end
         end
 
         def test_call_raises_if_finding_branches_fails
@@ -347,7 +375,9 @@ module ShopifyCli
             .with('git', 'push', '-u', 'heroku', "master:master")
             .returns(@status_mock[:true])
 
-          @command.call(@context)
+          capture_io do
+            @command.call(@context)
+          end
         end
 
         def test_call_raises_if_deploy_fails
@@ -355,8 +385,10 @@ module ShopifyCli
             .with('git', 'push', '-u', 'heroku', "master:master")
             .returns(@status_mock[:false])
 
-          assert_raises ShopifyCli::Abort do
-            @command.call(@context)
+          assert_raises ShopifyCli::AbortSilent do
+						capture_io do
+							@command.call(@context)
+						end
           end
         end
 
