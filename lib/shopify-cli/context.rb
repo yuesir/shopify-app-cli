@@ -8,6 +8,8 @@ module ShopifyCli
     autoload :Output, 'shopify-cli/context/output'
     autoload :System, 'shopify-cli/context/system'
 
+    extend T::Sig
+
     include SmartProperties
     include FileSystem
     include Output
@@ -33,6 +35,7 @@ module ShopifyCli
       @app_metadata ||= {}
     end
 
+    sig { params(hash: T::Hash[Symbol]).returns(T::Hash) }
     def app_metadata=(hash)
       @app_metadata = app_metadata.merge(hash)
     end
