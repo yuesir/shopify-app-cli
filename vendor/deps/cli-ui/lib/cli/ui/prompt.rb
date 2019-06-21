@@ -1,3 +1,4 @@
+# typed: false
 # coding: utf-8
 require 'cli/ui'
 require 'readline'

@@ -1,3 +1,4 @@
+# typed: true
 module TestHelpers
   module AppType
     include TestHelpers::Context

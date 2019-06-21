@@ -1,3 +1,4 @@
+# typed: false
 require 'shopify_cli'
 require 'optparse'
 

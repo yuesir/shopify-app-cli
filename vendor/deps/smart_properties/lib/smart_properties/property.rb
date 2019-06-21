@@ -1,3 +1,4 @@
+# typed: false
 module SmartProperties
   class Property
     MODULE_REFERENCE = :"@_smart_properties_method_scope"

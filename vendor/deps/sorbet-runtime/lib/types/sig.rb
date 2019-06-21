@@ -1,5 +1,5 @@
 # frozen_string_literal: true
-# typed: true
+# typed: strict
 # rubocop:disable PrisonGuard/NoTopLevelDeclarations, PrisonGuard/PackageMatchesDirectory
 
 # Used as a mixin to any class so that you can call `sig`.

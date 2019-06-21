@@ -1,3 +1,4 @@
+# typed: false
 module Enumerable
   def min_by(n = nil, &block)
     return sort_by(&block).first unless n

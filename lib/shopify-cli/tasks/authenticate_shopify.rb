@@ -1,3 +1,4 @@
+# typed: true
 require 'shopify_cli'
 require 'base64'
 require 'securerandom'

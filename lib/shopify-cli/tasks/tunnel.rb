@@ -1,3 +1,4 @@
+# typed: false
 require 'json'
 require 'fileutils'
 require 'shopify_cli'

@@ -1,3 +1,4 @@
+# typed: false
 module CLI
   module UI
     module Spinner

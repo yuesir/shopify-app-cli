@@ -1,3 +1,4 @@
+# typed: false
 module TestHelpers
   class FakeContext < ShopifyCli::Context
     attr_accessor :output_captured

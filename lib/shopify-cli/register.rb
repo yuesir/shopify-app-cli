@@ -1,3 +1,4 @@
+# typed: true
 # defines register method for files being loaded in dev.rb
 module ShopifyCli
   class InvalidOverrideError < StandardError; end

@@ -1,3 +1,4 @@
+# typed: false
 require 'cli/ui'
 
 module CLI

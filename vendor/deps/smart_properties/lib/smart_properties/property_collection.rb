@@ -1,3 +1,4 @@
+# typed: true
 module SmartProperties
   class PropertyCollection
     include Enumerable

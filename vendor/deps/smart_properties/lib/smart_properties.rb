@@ -1,3 +1,4 @@
+# typed: false
 ##
 # {SmartProperties} can be used to easily build more full-fledged accessors
 # for standard Ruby classes. In contrast to regular accessors,

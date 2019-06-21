@@ -1,3 +1,4 @@
+# typed: ignore
 module ShopifyCli
   module Finalize
     # include Dev::HasGlobalState

@@ -1,3 +1,4 @@
+# typed: strong
 require 'cli/ui'
 
 module CLI

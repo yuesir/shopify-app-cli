@@ -1,3 +1,4 @@
+# typed: true
 module CLI
   module UI
     module Prompt

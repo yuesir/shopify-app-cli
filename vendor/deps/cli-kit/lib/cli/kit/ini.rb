@@ -1,3 +1,4 @@
+# typed: true
 module CLI
   module Kit
     # INI is a language similar to JSON or YAML, but simplied

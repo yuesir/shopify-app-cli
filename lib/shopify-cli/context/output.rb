@@ -1,3 +1,4 @@
+# typed: false
 module ShopifyCli
   class Context
     module Output

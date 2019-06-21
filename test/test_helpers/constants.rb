@@ -1,3 +1,4 @@
+# typed: true
 module TestHelpers
   module Constants
     protected

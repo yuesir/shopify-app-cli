@@ -1,3 +1,4 @@
+# typed: false
 begin
   addpath = lambda do |p|
     path = File.expand_path("../../#{p}", __FILE__)

@@ -1,3 +1,4 @@
+# typed: true
 module ShopifyCli
   module Helpers
     module GraphQL

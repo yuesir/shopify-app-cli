@@ -1,3 +1,4 @@
+# typed: false
 module TestHelpers
   module Schema
     def setup

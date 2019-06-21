@@ -1,3 +1,4 @@
+# typed: false
 module Minitest
   class Test
     def capture_io(&block)

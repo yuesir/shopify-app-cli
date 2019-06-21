@@ -1,3 +1,4 @@
+# typed: false
 module SmartProperties
   class Error < ::ArgumentError; end
   class ConfigurationError < Error; end

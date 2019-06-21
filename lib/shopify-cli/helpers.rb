@@ -1,3 +1,4 @@
+# typed: strong
 module ShopifyCli
   module Helpers
     autoload :AccessToken, 'shopify-cli/helpers/access_token'

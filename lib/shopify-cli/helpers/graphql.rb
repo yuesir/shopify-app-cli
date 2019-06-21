@@ -1,3 +1,4 @@
+# typed: strong
 module ShopifyCli
   module Helpers
     module GraphQL

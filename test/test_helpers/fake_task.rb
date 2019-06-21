@@ -1,3 +1,4 @@
+# typed: true
 module TestHelpers
   module FakeTask
     class FakeTask < ShopifyCli::Task

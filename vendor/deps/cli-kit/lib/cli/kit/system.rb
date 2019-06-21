@@ -1,3 +1,4 @@
+# typed: false
 require 'cli/kit'
 
 require 'open3'

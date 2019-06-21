@@ -1,3 +1,4 @@
+# typed: strong
 require 'cli/ui'
 require 'cli/kit/ruby_backports/enumerable'
 

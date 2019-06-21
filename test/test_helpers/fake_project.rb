@@ -1,3 +1,4 @@
+# typed: strict
 # frozen_string_literal: true
 module TestHelpers
   class FakeProject < ShopifyCli::Project
