@@ -8,6 +8,7 @@ group :development, :test do
   gem 'rake'
   gem 'byebug'
   gem 'rubocop', '~> 0.61.0'
+  gem 'sorbet'
 end
 
 group :test do
