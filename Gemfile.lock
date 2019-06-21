@@ -39,6 +39,10 @@ GEM
     ruby-progressbar (1.10.0)
     safe_yaml (1.0.4)
     session (3.2.0)
+    sorbet (0.4.4271)
+      sorbet-static (= 0.4.4271)
+    sorbet-runtime (0.4.4271)
+    sorbet-static (0.4.4271-universal-darwin-14)
     unicode-display_width (1.4.1)
     webmock (2.3.2)
       addressable (>= 2.3.6)
@@ -57,10 +61,9 @@ DEPENDENCIES
   rake
   rubocop (~> 0.61.0)
   session
+  sorbet
+  sorbet-runtime
   webmock
-
-RUBY VERSION
-   ruby 2.5.1p57
 
 BUNDLED WITH
    1.17.3
