@@ -1,2 +1,4 @@
 --dir
 .
+--ignore=test/
+--dsl-plugins=sorbet/plugin/triggers.yml

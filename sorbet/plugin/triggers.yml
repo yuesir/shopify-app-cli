@@ -1,0 +1,3 @@
+triggers:
+  property: sorbet/plugin/smart_properties.rb
+  property!: sorbet/plugin/smart_properties.rb
