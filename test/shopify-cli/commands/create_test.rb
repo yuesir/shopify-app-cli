@@ -14,6 +14,12 @@ module ShopifyCli
         @context.expects(:puts).with(ShopifyCli::Commands::Create.help)
         @command.call([], nil)
       end
+
+      def test_with_project_calls_project
+        ShopifyCli::Commands::Create::Project.any_instance.expects(:call)
+          .with(['project', 'new-app'], 'project')
+        ShopifyCli::EntryPoint.call(['create', 'project', 'new-app'])
+      end
     end
   end
 end

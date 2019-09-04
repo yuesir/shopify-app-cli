@@ -1,12 +1,16 @@
 # frozen_string_literal: true
 require 'shopify_cli'
 require 'optparse'
+require 'forwardable'
 
 module ShopifyCli
   class Options
+    extend Forwardable
     include SmartProperties
 
     attr_reader :flags, :subcommand
+
+    def_delegator :parser, :on, :on
 
     def initialize
       @flags = {}

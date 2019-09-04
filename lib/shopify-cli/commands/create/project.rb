@@ -9,7 +9,7 @@ module ShopifyCli
             @ctx.puts(self.class.help)
             return
           end
-          name = args.first
+          name = args[1]
           app_type = CLI::UI::Prompt.ask('What type of app project would you like to create?') do |handler|
             AppTypeRegistry.each do |identifier, type|
               handler.option(type.description) { identifier }

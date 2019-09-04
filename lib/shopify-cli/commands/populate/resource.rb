@@ -4,7 +4,7 @@ require 'optparse'
 module ShopifyCli
   module Commands
     class Populate
-      class Resource < ShopifyCli::Command
+      class Resource < ShopifyCli::SubCommand
         include SmartProperties
 
         DEFAULT_COUNT = 5
