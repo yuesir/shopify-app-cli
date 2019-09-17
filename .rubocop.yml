@@ -1,5 +1,5 @@
 inherit_from:
-  - https://shopify.github.io/ruby-style-guide/rubocop-cli.yml
+  - .rubocop-https---shopify-github-io-ruby-style-guide-rubocop-cli-yml
 
 AllCops:
   Exclude:
