@@ -27,13 +27,26 @@ module ShopifyCli
 
       def open_url!(ctx, uri)
         OPEN_COMMANDS.each do |bin, cmd|
-          return ctx.system(cmd, "'#{uri}'") if File.executable?(bin)
+          path = which(bin)
+          next if path.nil?
+          return ctx.system(cmd, "'#{uri}'") if File.executable?(path)
         end
         help = <<~OPEN
           No open command available, (open, xdg-open, python)
           Please open {{bold_green:#{uri}}} in your browser
         OPEN
         ctx.puts(help)
+      end
+
+      def which(cmd)
+        exts = ENV['PATHEXT'] ? ENV['PATHEXT'].split(';') : ['']
+        ENV['PATH'].split(File::PATH_SEPARATOR).each do |path|
+          exts.each do |ext|
+            exe = File.join(path, "#{cmd}#{ext}")
+            return exe if File.executable?(exe) && !File.directory?(exe)
+          end
+        end
+        nil
       end
     end
   end
