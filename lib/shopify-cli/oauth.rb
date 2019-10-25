@@ -100,6 +100,8 @@ module ShopifyCli
             respond_with(socket, 200, SUCCESS_RESP)
           end
           query
+        rescue StandardError => e
+          puts e
         ensure
           socket.close_write
           server.close
