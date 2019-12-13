@@ -5,7 +5,7 @@ module ShopifyCli
 
       def call(ctx, url:)
         @ctx = ctx
-        project = ShopifyCli::Project.current
+        project = ShopifyCli::Project.at(@ctx.root)
         app_type = project.app_type
         api_key = project.env.api_key
         result = Helpers::PartnersAPI.query(ctx, 'get_app_urls', apiKey: api_key)

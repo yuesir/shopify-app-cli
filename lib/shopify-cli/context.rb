@@ -31,5 +31,9 @@ module ShopifyCli
     def app_metadata=(hash)
       @app_metadata = app_metadata.merge(hash)
     end
+
+    def pause(time = 1)
+      Kernel.sleep(time) unless @env['TEST']
+    end
   end
 end

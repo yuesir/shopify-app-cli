@@ -3,6 +3,12 @@ require 'fileutils'
 module ShopifyCli
   class Context
     module System
+      def cd(path)
+        path = File.join(@env['PWD'], path)
+        self.root = path
+        ShopifyCli::Finalize.request_cd(path)
+      end
+
       def spawn(*args, **kwargs)
         Kernel.spawn(@env, *args, **kwargs)
       end

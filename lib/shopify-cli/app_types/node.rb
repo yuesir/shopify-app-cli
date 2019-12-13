@@ -8,9 +8,9 @@ module ShopifyCli
           'node embedded app'
         end
 
-        def serve_command(_ctx)
+        def serve_command(ctx)
           %W(
-            HOST=#{Project.current.env.host}
+            HOST=#{Project.at(ctx.root).env.host}
             PORT=#{ShopifyCli::Tasks::Tunnel::PORT}
             npm run dev
           ).join(' ')
@@ -56,7 +56,7 @@ module ShopifyCli
 
       def build(name)
         ShopifyCli::Tasks::Clone.call('https://github.com/Shopify/shopify-app-node.git', name)
-        ShopifyCli::Finalize.request_cd(name)
+        ctx.cd(name)
         ShopifyCli::Tasks::JsDeps.call(ctx)
 
         begin

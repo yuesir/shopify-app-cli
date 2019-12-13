@@ -77,7 +77,7 @@ module ShopifyCli
         CLI::UI::Frame.open('Running migrations…') do
           ctx.system(Gem.binary_path_for(ctx, 'rails'), 'db:migrate', 'RAILS_ENV=development', chdir: ctx.root)
         end
-        ShopifyCli::Finalize.request_cd(name)
+        ctx.cd(name)
 
         set_custom_ua
       end

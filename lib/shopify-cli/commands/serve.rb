@@ -14,7 +14,7 @@ module ShopifyCli
       end
 
       def call(*)
-        project = Project.current
+        project = Project.at(@ctx.root)
         url = options.flags[:host] || Tasks::Tunnel.call(@ctx)
         update_env(url)
         ShopifyCli::Tasks::UpdateDashboardURLS.call(@ctx, url: url)
@@ -45,7 +45,7 @@ module ShopifyCli
       end
 
       def update_env(url)
-        Project.current.env.update(@ctx, :host, url)
+        Project.at(@ctx.root).env.update(@ctx, :host, url)
       end
 
       def on_siginfo
