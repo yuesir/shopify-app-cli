@@ -21,18 +21,18 @@ module ShopifyCli
         end
 
         # a line break before output aids scanning/readability
-        puts ""
+        @ctx.puts("")
         @ctx.puts('{{bold:Available commands}}')
         @ctx.puts('Use {{command:shopify help [command]}} to display detailed information about a specific command.')
-        puts ""
+        @ctx.puts("")
 
         ShopifyCli::Commands::Registry.resolved_commands.sort.each do |name, klass|
           next if name == 'help'
-          puts CLI::UI.fmt("{{command:#{ShopifyCli::TOOL_NAME} #{name}}}")
+          @ctx.puts("{{command:#{ShopifyCli::TOOL_NAME} #{name}}}")
           if (help = klass.help)
-            puts CLI::UI.fmt(help)
+            @ctx.puts(help)
           end
-          puts ""
+          @ctx.puts("")
         end
       end
 

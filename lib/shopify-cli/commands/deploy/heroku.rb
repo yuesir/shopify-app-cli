@@ -95,7 +95,7 @@ module ShopifyCli
 
         def git_branches
           output, status = @ctx.capture2e('git', 'branch', '--list', '--format=%(refname:short)')
-          raise(ShopifyCli::Abort, "{{x}} Could not find any git branches") unless status.success?
+          @ctx.error("Could not find any git branches") unless status.success?
 
           branches = if output == ''
             ['master']
@@ -110,12 +110,12 @@ module ShopifyCli
           output, status = @ctx.capture2e('git', 'status')
 
           unless status.success?
-            msg = "{{x}} Git repo is not initiated. Please run `git init` and make at least one commit."
-            raise(ShopifyCli::Abort, msg)
+            msg = "Git repo is not initiated. Please run `git init` and make at least one commit."
+            @ctx.error(msg)
           end
 
           if output.include?('No commits yet')
-            raise(ShopifyCli::Abort, "{{x}} No git commits have been made. Please make at least one commit.")
+            @ctx.error("No git commits have been made. Please make at least one commit.")
           end
         end
 
@@ -129,7 +129,7 @@ module ShopifyCli
 
         def heroku_authenticate
           result = @ctx.system(heroku_command, 'login')
-          raise(ShopifyCli::Abort, "{{x}} Could not authenticate with Heroku") unless result.success?
+          @ctx.error("Could not authenticate with Heroku") unless result.success?
         end
 
         def heroku_command
@@ -143,26 +143,26 @@ module ShopifyCli
 
         def heroku_create_new_app
           output, status = @ctx.capture2e(heroku_command, 'create')
-          raise(ShopifyCli::Abort, '{{x}} Heroku app could not be created') unless status.success?
+          @ctx.error('Heroku app could not be created') unless status.success?
           @ctx.puts(output)
 
           new_remote = output.split("\n").last.split("|").last.strip
           result = @ctx.system('git', 'remote', 'add', 'heroku', new_remote)
-          msg = "{{x}} Heroku app created, but couldn’t be set as a git remote"
-          raise(ShopifyCli::Abort, msg) unless result.success?
+          msg = "Heroku app created, but couldn’t be set as a git remote"
+          @ctx.error(msg) unless result.success?
         end
 
         def heroku_deploy(branch_to_deploy)
           result = @ctx.system('git', 'push', '-u', 'heroku', "#{branch_to_deploy}:master")
-          raise(ShopifyCli::Abort, "{{x}} Could not deploy to Heroku") unless result.success?
+          @ctx.error("Could not deploy to Heroku") unless result.success?
         end
 
         def heroku_download
           return if heroku_installed?
 
           result = @ctx.system('curl', '-o', heroku_download_path, DOWNLOAD_URLS[os], chdir: ShopifyCli::ROOT)
-          raise(ShopifyCli::Abort, "{{x}} Heroku CLI could not be downloaded") unless result.success?
-          raise(ShopifyCli::Abort, "{{x}} Heroku CLI could not be downloaded") unless File.exist?(heroku_download_path)
+          @ctx.error("Heroku CLI could not be downloaded") unless result.success?
+          @ctx.error("Heroku CLI could not be downloaded") unless File.exist?(heroku_download_path)
         end
 
         def heroku_download_filename
@@ -182,9 +182,9 @@ module ShopifyCli
           return if heroku_installed?
 
           result = @ctx.system('tar', '-xf', heroku_download_path, chdir: ShopifyCli::ROOT)
-          raise(ShopifyCli::Abort, "{{x}} Could not install Heroku CLI") unless result.success?
+          @ctx.error("Could not install Heroku CLI") unless result.success?
 
-          FileUtils.rm(heroku_download_path)
+          @ctx.rm(heroku_download_path)
         end
 
         def heroku_installed?
@@ -196,8 +196,8 @@ module ShopifyCli
 
         def heroku_select_existing_app(app_name)
           result = @ctx.system(heroku_command, 'git:remote', '-a', app_name)
-          msg = "{{x}} Heroku app `#{app_name}` could not be selected"
-          raise(ShopifyCli::Abort, msg) unless result.success?
+          msg = "Heroku app `#{app_name}` could not be selected"
+          @ctx.error(msg) unless result.success?
         end
 
         def heroku_whoami
