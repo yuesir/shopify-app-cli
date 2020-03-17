@@ -5,6 +5,7 @@ module Rails
 
     register_command('Rails::Commands::Open', "open")
     register_command('Rails::Commands::Serve', "serve")
+    register_command('Rails::Commands::Generate', "generate")
     # register_task('Rails::Tasks::RailsTask', 'rails_task')
   end
 
@@ -12,6 +13,7 @@ module Rails
   module Commands
     autoload :Create, Project.project_filepath('commands/create')
     autoload :Open, Project.project_filepath('commands/open')
+    autoload :Generate, Project.project_filepath('commands/generate')
     autoload :Serve, Project.project_filepath('commands/serve')
   end
 
